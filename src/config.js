@@ -5,13 +5,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Prefixo padrão dos comandos.
-export const PREFIX = "/";
+export const PREFIX = ".";
 
 // Emoji do bot (mude se preferir).
 export const BOT_EMOJI = "🤖";
 
 // Nome do bot (mude se preferir).
-export const BOT_NAME = "Takeshi Bot";
+export const BOT_NAME = "Elísio Bot";
 
 // LID do bot.
 // Para obter o LID do bot, use o comando <prefixo>lid respondendo em cima de uma mensagem do número do bot
