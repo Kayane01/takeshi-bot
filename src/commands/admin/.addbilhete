@@ -1,0 +1,37 @@
+export default {
+  name: "addbilhete",
+  description: "Gera bilhete de teste (falsificado) para simulação.",
+  commands: ["addbilhete", "bilhete-teste"],
+  usage: `${PREFIX}addbilhete [nome] [valor]`,
+  handle: async ({ args, sendSuccessReply, sendErrorReply }) => {
+    try {
+      const [nome, valor] = args;
+      if (!nome || !valor) {
+        return await sendErrorReply("Uso: .addbilhete [nome] [valor]");
+      }
+
+      const transacaoId = "TESTE-" + Math.floor(Math.random() * 1000000);
+      const hora = new Date().toLocaleString("pt-MZ");
+
+      const qrData = `Cliente:${nome}|ID:${transacaoId}|Valor:${valor}MT|Hora:${hora}`;
+      const qrCodeBase64 = await QRCode.toDataURL(qrData);
+
+      const bilheteTeste = new Transacao({
+        cliente: nome,
+        valor,
+        metodo: "TESTE",
+        transacaoId,
+        comprovativo: "Bilhete gerado para teste",
+        status: "teste",
+        data: new Date(),
+        qrCode: qrCodeBase64
+      });
+
+      await bilheteTeste.save();
+
+      await sendSuccessReply(`🎟️ Bilhete de teste criado!\nCliente: ${nome}\nID: ${transacaoId}\nValor: ${valor} MT`);
+    } catch (error) {
+      await sendErrorReply("Erro ao gerar bilhete de teste.");
+    }
+  }
+};
