@@ -1,0 +1,22 @@
+export default {
+  name: "relatorio",
+  description: "Lista bilhetes confirmados, usados e pendentes.",
+  commands: ["relatorio", "bilhetes"],
+  usage: `${PREFIX}relatorio`,
+  handle: async ({ sendSuccessReply, sendErrorReply }) => {
+    try {
+      const pendentes = await Transacao.find({ status: "pendente" });
+      const confirmados = await Transacao.find({ status: "confirmado" });
+      const usados = await Transacao.find({ status: "usado" });
+
+      let msg = "📊 Relatório de Bilhetes\n\n";
+      msg += `🟡 Pendentes: ${pendentes.length}\n`;
+      msg += `🟢 Confirmados: ${confirmados.length}\n`;
+      msg += `🔴 Usados: ${usados.length}\n`;
+
+      await sendSuccessReply(msg);
+    } catch (error) {
+      await sendErrorReply("Erro ao gerar relatório.");
+    }
+  }
+};
